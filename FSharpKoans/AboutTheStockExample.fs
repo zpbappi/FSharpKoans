@@ -60,6 +60,16 @@ module ``about the stock example`` =
 
     [<Koan>]
     let YouGotTheAnswerCorrect() =
-        let result =  __
+        let splitLine (x:string) = 
+            x.Split([|','|])
+        
+        let variance (opening:string) (closing:string) =
+            abs(System.Double.Parse(opening, System.Globalization.CultureInfo.InvariantCulture) - System.Double.Parse(closing, System.Globalization.CultureInfo.InvariantCulture))
+
+        let result =  stockData
+                      |> Seq.skip 1
+                      |> Seq.map splitLine
+                      |> Seq.maxBy (fun arr -> variance arr.[1] arr.[6])
+                      |> fun arr -> arr.[0]
         
         AssertEquality "2012-03-13" result
